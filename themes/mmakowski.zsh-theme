@@ -57,7 +57,7 @@ prompt_end() {
 # Context: user@hostname (who am I and where am I)
 prompt_context() {
   if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    prompt_segment black default "%(!.%{%F{yellow}%}.)$USER@%m"
+    prompt_segment magenta black "%(!.%{%F{yellow}%}.)$USER@%m"
   fi
 }
 
@@ -167,11 +167,16 @@ prompt_dir() {
   prompt_segment blue black `shrink_path -f`
 }
 
-# Virtualenv: current working virtualenv
-prompt_virtualenv() {
+# Sandbox: virtualenv, anaconda etc.
+# you will want to configure conda to not change PS1 on its own:
+#     conda config --set changeps1 False
+prompt_sandbox() {
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n $virtualenv_path && -n $VIRTUAL_ENV_DISABLE_PROMPT ]]; then
-    prompt_segment blue black "(`basename $virtualenv_path`)"
+    prompt_segment cyan black "`basename $virtualenv_path`"
+  fi
+  if [[ -n $CONDA_DEFAULT_ENV ]]; then
+    prompt_segment cyan black "$CONDA_DEFAULT_ENV"
   fi
 }
 
@@ -193,7 +198,7 @@ prompt_status() {
 build_prompt() {
   RETVAL=$?
   prompt_status
-  prompt_virtualenv
+  prompt_sandbox
   prompt_context
   prompt_dir
   prompt_git
