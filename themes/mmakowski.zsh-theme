@@ -171,12 +171,14 @@ prompt_dir() {
 # you will want to configure conda to not change PS1 on its own:
 #     conda config --set changeps1 False
 prompt_sandbox() {
+  local bgcolor=013
+  local fgcolor=black
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n $virtualenv_path && -n $VIRTUAL_ENV_DISABLE_PROMPT ]]; then
-    prompt_segment cyan black "`basename $virtualenv_path`"
+    prompt_segment $bgcolor $fgcolor "`basename $virtualenv_path`"
   fi
   if [[ -n $CONDA_DEFAULT_ENV ]]; then
-    prompt_segment cyan black "$CONDA_DEFAULT_ENV"
+    prompt_segment $bgcolor $fgcolor "$CONDA_DEFAULT_ENV"
   fi
 }
 
